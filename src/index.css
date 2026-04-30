@@ -62,3 +62,13 @@
     animation: none;
   }
 }
+
+.brand-wordmark {
+  color: #ffd700;
+  font-family: "Nunito", sans-serif;
+  font-size: clamp(2rem, 4vw, 3.7rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0;
+  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.12);
+}

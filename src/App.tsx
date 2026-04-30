@@ -43,7 +43,7 @@ export default function App() {
                 referrerPolicy="no-referrer"
               />
             </div>
-            <span className="text-gold font-display text-2xl md:text-3xl font-black tracking-tighter hidden sm:block">
+            <span className="brand-wordmark hidden sm:block">
               TaleWhims
             </span>
           </div>
