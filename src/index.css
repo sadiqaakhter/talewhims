@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Fredoka One", cursive;
+  --font-sans: "Nunito", sans-serif;
+  
+  --color-pink: #FF3D8F;
+  --color-yellow: #FFD166;
+  --color-coral: #FF6B5B;
+  --color-teal: #4ECDC4;
+  --color-purple: #7B68EE;
+  --color-cream: #FFF8EE;
+  --color-navy: #1A3A5C;
+  --color-amazon: #FF9900;
+  --color-royal: #002366;
+  --color-gold: #FFD700;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply antialiased bg-cream text-navy font-sans;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+.card-transition {
+  @apply transition-all duration-300 hover:-translate-y-2 hover:shadow-xl;
+}
+
+.btn-hover {
+  @apply transition-all duration-200 active:scale-95;
+}
