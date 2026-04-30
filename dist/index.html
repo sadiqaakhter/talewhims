@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TaleWhims</title>
+    <script>
+      // Early fix for "Uncaught TypeError: Cannot set property fetch of #<Window> which has only a getter"
+      // This is a known issue with some libraries trying to polyfill fetch in restricted environments.
+      (function() {
+        try {
+          if (typeof window !== 'undefined' && 'fetch' in window) {
+            var desc = Object.getOwnPropertyDescriptor(window, 'fetch');
+            if (desc && !desc.set && desc.configurable !== false) {
+              var originalFetch = window.fetch;
+              Object.defineProperty(window, 'fetch', {
+                get: function() { return originalFetch; },
+                set: function(val) { 
+                  console.warn('Attempted to override window.fetch, but it is protected. Assignment ignored.');
+                },
+                configurable: true,
+                enumerable: true
+              });
+            }
+          }
+        } catch (e) {
+          console.warn('Early fetch patch failed:', e);
+        }
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-C9xtjHEr.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CRcbBvi0.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
+
