@@ -385,6 +385,8 @@ const coloringPageImages = [
   "coloring-pages/coloring-06.jpg",
   "coloring-pages/coloring-07.jpg",
   "coloring-pages/coloring-08.jpg",
+  "coloring-pages/coloring-09.jpg",
+  "coloring-pages/coloring-10.jpg",
 ];
 
 function ColoringPagesSlideshow() {
