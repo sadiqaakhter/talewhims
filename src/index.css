@@ -38,3 +38,27 @@
 .btn-hover {
   @apply transition-all duration-200 active:scale-95;
 }
+
+.coloring-marquee {
+  animation: coloring-scroll 55s linear infinite;
+}
+
+.coloring-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes coloring-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coloring-marquee {
+    animation: none;
+  }
+}

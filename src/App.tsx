@@ -346,24 +346,7 @@ function HomePage({ onPageChange }: { onPageChange: (page: Page) => void }) {
         </div>
       </section>
 
-      {/* About Section Snippet */}
-      <section className="py-32 bg-cream px-6">
-        <div className="max-w-4xl mx-auto text-center space-y-12">
-          <div className="w-24 h-24 bg-coral/10 text-coral flex items-center justify-center rounded-3xl mx-auto shadow-sm transform -rotate-3">
-            <Heart size={48} className="fill-coral" />
-          </div>
-          <h2 className="text-4xl md:text-7xl text-navy leading-tight">Made with love, built for wonder</h2>
-          <p className="text-xl md:text-2xl text-navy/70 leading-relaxed font-bold">
-            Talewhims was created by Sadiqa Akhter — a professional illustrator and Google Certified Educator with over a decade of experience bringing stories to life for children around the world. Every video, every book, and every character is made with one goal: to make learning feel like the greatest adventure of all.
-          </p>
-          <button 
-            onClick={() => onPageChange("about")}
-            className="text-pink font-display text-3xl flex items-center justify-center gap-3 mx-auto group hover:translate-x-2 transition-transform"
-          >
-            Meet the Creator <ArrowRight className="group-hover:translate-x-2 transition-transform" size={32} />
-          </button>
-        </div>
-      </section>
+      <ColoringPagesSlideshow />
 
       {/* Newsletter */}
       <section className="bg-pink py-32 px-6 relative overflow-hidden">
@@ -390,6 +373,61 @@ function HomePage({ onPageChange }: { onPageChange: (page: Page) => void }) {
         </div>
       </section>
     </motion.div>
+  );
+}
+
+const coloringPageImages = [
+  "coloring-pages/coloring-01.jpg",
+  "coloring-pages/coloring-02.jpg",
+  "coloring-pages/coloring-03.jpg",
+  "coloring-pages/coloring-04.jpg",
+  "coloring-pages/coloring-05.jpg",
+  "coloring-pages/coloring-06.jpg",
+  "coloring-pages/coloring-07.jpg",
+  "coloring-pages/coloring-08.jpg",
+];
+
+function ColoringPagesSlideshow() {
+  const slides = [...coloringPageImages, ...coloringPageImages];
+
+  return (
+    <section className="py-24 md:py-32 bg-cream overflow-hidden border-y-8 border-white">
+      <div className="max-w-7xl mx-auto px-6 mb-14 text-center">
+        <span className="bg-pink/10 text-pink px-6 py-2 rounded-full text-sm font-black uppercase tracking-[0.25em]">
+          Coloring Pages
+        </span>
+        <h2 className="text-4xl md:text-6xl text-navy mt-6 mb-4">Cute pages for little artists</h2>
+        <p className="text-lg md:text-2xl font-bold text-navy/50 max-w-3xl mx-auto">
+          A soft moving gallery of TaleWhims coloring book pages, made for tiny hands and big imagination.
+        </p>
+      </div>
+
+      <div className="relative">
+        <div className="absolute inset-y-0 left-0 w-24 md:w-40 bg-gradient-to-r from-cream to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-24 md:w-40 bg-gradient-to-l from-cream to-transparent z-10 pointer-events-none" />
+
+        <div className="coloring-marquee flex gap-6 md:gap-10 w-max">
+          {slides.map((src, index) => (
+            <div
+              key={`${src}-${index}`}
+              className="w-56 sm:w-64 md:w-80 aspect-[3/4] rounded-[2rem] bg-white p-4 shadow-xl border-4 border-white flex-shrink-0"
+            >
+              <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden bg-gradient-to-br from-yellow/35 via-white to-pink/25 flex items-center justify-center">
+                <img
+                  src={src}
+                  alt="TaleWhims coloring book page"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  onError={(event) => {
+                    event.currentTarget.style.display = "none";
+                  }}
+                />
+                <BookIcon size={72} className="text-navy/15" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
