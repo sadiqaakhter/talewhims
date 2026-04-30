@@ -37,7 +37,7 @@ export default function App() {
           >
             <div className="h-14 w-14 md:h-16 md:w-16 rounded-full overflow-hidden border-2 border-gold/40 shadow-lg group-hover:scale-105 transition-transform">
               <img 
-                src="https://talewhims.com/wp-content/uploads/2023/10/TaleWhims-Logo.png" 
+                src="logo.png" 
                 alt="TaleWhims Logo" 
                 className="w-full h-full object-contain bg-white p-1" 
                 referrerPolicy="no-referrer"
@@ -145,7 +145,7 @@ export default function App() {
               >
                 <div className="h-16 w-16 rounded-full overflow-hidden border-2 border-white/20 p-1 bg-white">
                   <img 
-                    src="https://talewhims.com/wp-content/uploads/2023/10/TaleWhims-Logo.png" 
+                    src="logo.png" 
                     alt="TaleWhims Logo" 
                     className="w-full h-full object-contain" 
                   />
