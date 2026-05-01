@@ -4,6 +4,15 @@ import { Menu, X, ShoppingCart, Youtube, Book as BookIcon, Play, Star, Sparkles,
 
 type Page = "home" | "books" | "about" | "others";
 
+const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@talewhims";
+const AMAZON_AUTHOR_URL = "https://www.amazon.com/author/talewhims";
+
+const youtubeSearchUrl = (query: string) =>
+  `${YOUTUBE_CHANNEL_URL}/search?query=${encodeURIComponent(query)}`;
+
+const amazonBookUrl = (book: string) =>
+  `https://www.amazon.com/s?k=${encodeURIComponent(`${book} Sadiqa Akhter`)}`;
+
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>("home");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -154,8 +163,8 @@ export default function App() {
               </div>
               <p className="font-bold opacity-80 uppercase tracking-widest text-sm">Little Stories. Big Wonders.</p>
               <div className="flex justify-center md:justify-start gap-6">
-                <a href="https://www.youtube.com/@talewhims" target="_blank" className="hover:scale-110 transition-transform"><Youtube size={28} /></a>
-                <a href="https://www.amazon.com/author/talewhims" target="_blank" className="hover:scale-110 transition-transform"><ShoppingCart size={28} /></a>
+                <a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition-transform"><Youtube size={28} /></a>
+                <a href={AMAZON_AUTHOR_URL} target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition-transform"><ShoppingCart size={28} /></a>
                 <a href="https://www.instagram.com/talewhims/" target="_blank" className="hover:scale-110 transition-transform"><Instagram size={28} /></a>
               </div>
             </div>
@@ -285,8 +294,9 @@ function HomePage({ onPageChange }: { onPageChange: (page: Page) => void }) {
             
             <div className="flex flex-col sm:flex-row justify-center gap-6 w-full max-w-2xl">
               <a 
-                href="https://www.youtube.com/@talewhims" 
+                href={YOUTUBE_CHANNEL_URL} 
                 target="_blank"
+                rel="noopener noreferrer"
                 className="flex-1 bg-pink text-white px-10 py-6 rounded-3xl font-display text-2xl flex items-center justify-center gap-4 shadow-xl hover:translate-y-[-4px] hover:shadow-pink/30 active:translate-y-0 transition-all group"
               >
                 Watch Channel <Youtube size={32} className="group-hover:rotate-12 transition-transform" />
@@ -307,15 +317,15 @@ function HomePage({ onPageChange }: { onPageChange: (page: Page) => void }) {
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl md:text-6xl text-navy text-center mb-20">What's on Talewhims?</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-            <SeriesCard color="bg-yellow" icon="🎵" title="Classic Nursery Rhymes" desc="All the classic rhymes your little ones love, beautifully animated" />
-            <SeriesCard color="bg-pink" icon="🎶" title="Original Songs" desc="Brand new original songs you won't find anywhere else" />
-            <SeriesCard color="bg-teal" icon="📚" title="Learn With Talewhims" desc="Colours, numbers, animals and more — learning through music" />
-            <SeriesCard color="bg-purple" icon="📖" title="Wisdom Tales" desc="Animated storybooks with animal heroes and big life lessons" />
-            <SeriesCard color="bg-coral" icon="🦁" title="Why I Am Amazing" desc="Every animal is amazing — and this series proves it" />
-            <SeriesCard color="bg-yellow" icon="🎙️" title="Chicken & Banana Show" desc="The funniest kids podcast on YouTube" />
-            <SeriesCard color="bg-purple" icon="🌙" title="Nani Ki Kahani" desc="Urdu moral stories narrated by a real grandmother" />
-            <SeriesCard color="bg-pink" icon="🎨" title="Kids Coloring Books" desc="Original illustrated coloring books available on Amazon" />
-            <SeriesCard color="bg-teal" icon="⚡" title="Talewhims Shorts" desc="60 seconds of pure Talewhims magic" />
+            <SeriesCard color="bg-yellow" icon="🎵" title="Classic Nursery Rhymes" desc="All the classic rhymes your little ones love, beautifully animated" href={youtubeSearchUrl("Classic Nursery Rhymes")} />
+            <SeriesCard color="bg-pink" icon="🎶" title="Original Songs" desc="Brand new original songs you won't find anywhere else" href={youtubeSearchUrl("Original Songs")} />
+            <SeriesCard color="bg-teal" icon="📚" title="Learn With Talewhims" desc="Colours, numbers, animals and more — learning through music" href={youtubeSearchUrl("Learn With Talewhims")} />
+            <SeriesCard color="bg-purple" icon="📖" title="Wisdom Tales" desc="Animated storybooks with animal heroes and big life lessons" href={youtubeSearchUrl("Wisdom Tales")} />
+            <SeriesCard color="bg-coral" icon="🦁" title="Why I Am Amazing" desc="Every animal is amazing — and this series proves it" href={youtubeSearchUrl("Why I Am Amazing")} />
+            <SeriesCard color="bg-yellow" icon="🎙️" title="Chicken & Banana Show" desc="The funniest kids podcast on YouTube" href={youtubeSearchUrl("Chicken Banana Show Episode 1")} />
+            <SeriesCard color="bg-purple" icon="🌙" title="Nani Ki Kahani" desc="Urdu moral stories narrated by a real grandmother" href={youtubeSearchUrl("Nani Ki Kahani")} />
+            <SeriesCard color="bg-pink" icon="🎨" title="Kids Coloring Books" desc="Original illustrated coloring books available on Amazon" href={AMAZON_AUTHOR_URL} cta="Shop Books" />
+            <SeriesCard color="bg-teal" icon="⚡" title="Talewhims Shorts" desc="60 seconds of pure Talewhims magic" href={`${YOUTUBE_CHANNEL_URL}/shorts`} cta="Watch Shorts" />
           </div>
         </div>
       </section>
@@ -433,7 +443,7 @@ function ColoringPagesSlideshow() {
   );
 }
 
-function SeriesCard({ color, icon, title, desc }: { color: string, icon: string, title: string, desc: string }) {
+function SeriesCard({ color, icon, title, desc, href = YOUTUBE_CHANNEL_URL, cta = "Watch Now" }: { color: string, icon: string, title: string, desc: string, href?: string, cta?: string }) {
   return (
     <div className={`p-10 rounded-[3rem] ${color} group card-transition flex flex-col justify-between h-full border-b-8 border-navy/10`}>
       <div className="space-y-6">
@@ -442,11 +452,12 @@ function SeriesCard({ color, icon, title, desc }: { color: string, icon: string,
         <p className="text-navy/60 font-bold leading-relaxed text-lg">{desc}</p>
       </div>
       <a 
-        href="https://www.youtube.com/@talewhims" 
+        href={href} 
         target="_blank" 
+        rel="noopener noreferrer"
         className="mt-12 bg-white/30 group-hover:bg-white text-navy py-5 rounded-2xl font-display text-2xl text-center transition-all shadow-sm group-hover:shadow-lg"
       >
-        Watch Now
+        {cta}
       </a>
     </div>
   );
@@ -466,15 +477,15 @@ function FeaturedBook({ color, title }: { color: string, title: string }) {
 // --- WATCH PAGE Component ---
 function WatchPage() {
   const series = [
-    { title: "Classic Nursery Rhymes", desc: "Sing along with the world's most beloved nursery rhymes, brought to life with warm colourful animation. Perfect for toddlers and preschoolers aged 2–6." },
-    { title: "Original Songs", desc: "Fresh, original, never-before-heard kids songs created just for little ones. From silly animal adventures to energetic dance anthems — all original Talewhims creations." },
-    { title: "Learn With Talewhims", desc: "Colours, numbers, animals, fruits and vegetables — early learning has never been this fun. Created by a Google Certified Educator with over a decade of teaching experience." },
-    { title: "Wisdom Tales", desc: "Animated adaptations of original Talewhims storybooks, featuring animal heroes and big life lessons wrapped in magical adventures." },
-    { title: "Why I Am Amazing", desc: "Every animal hero takes centre stage to celebrate what makes them extraordinary. A joyful series about self-confidence, self-love, and individuality." },
-    { title: "Chicken & Banana Show", desc: "Chicken and Banana sit behind their microphones and tackle the big questions kids actually care about — with maximum giggles guaranteed." },
-    { title: "Nani Ki Kahani", desc: "Original Urdu and Hindi moral stories narrated by a real grandmother, brought to life through beautiful 3D animation. With English subtitles." },
-    { title: "Kids Coloring Books", desc: "Video previews and trailers for the full Talewhims coloring book collection — available on Amazon." },
-    { title: "Talewhims Shorts", desc: "Bite-sized moments of Talewhims magic — new Shorts every week." }
+    { title: "Classic Nursery Rhymes", desc: "Sing along with the world's most beloved nursery rhymes, brought to life with warm colourful animation. Perfect for toddlers and preschoolers aged 2–6." , href: youtubeSearchUrl("Classic Nursery Rhymes") },
+    { title: "Original Songs", desc: "Fresh, original, never-before-heard kids songs created just for little ones. From silly animal adventures to energetic dance anthems — all original Talewhims creations." , href: youtubeSearchUrl("Original Songs") },
+    { title: "Learn With Talewhims", desc: "Colours, numbers, animals, fruits and vegetables — early learning has never been this fun. Created by a Google Certified Educator with over a decade of teaching experience." , href: youtubeSearchUrl("Learn With Talewhims") },
+    { title: "Wisdom Tales", desc: "Animated adaptations of original Talewhims storybooks, featuring animal heroes and big life lessons wrapped in magical adventures." , href: youtubeSearchUrl("Wisdom Tales") },
+    { title: "Why I Am Amazing", desc: "Every animal hero takes centre stage to celebrate what makes them extraordinary. A joyful series about self-confidence, self-love, and individuality." , href: youtubeSearchUrl("Why I Am Amazing") },
+    { title: "Chicken & Banana Show", desc: "Chicken and Banana sit behind their microphones and tackle the big questions kids actually care about — with maximum giggles guaranteed." , href: youtubeSearchUrl("Chicken Banana Show Episode 1") },
+    { title: "Nani Ki Kahani", desc: "Original Urdu and Hindi moral stories narrated by a real grandmother, brought to life through beautiful 3D animation. With English subtitles." , href: youtubeSearchUrl("Nani Ki Kahani") },
+    { title: "Kids Coloring Books", desc: "Video previews and trailers for the full Talewhims coloring book collection — available on Amazon." , href: AMAZON_AUTHOR_URL },
+    { title: "Talewhims Shorts", desc: "Bite-sized moments of Talewhims magic — new Shorts every week." , href: `${YOUTUBE_CHANNEL_URL}/shorts` }
   ];
 
   return (
@@ -496,8 +507,9 @@ function WatchPage() {
                 <h2 className="text-4xl md:text-6xl text-navy">{item.title}</h2>
                 <p className="text-xl md:text-2xl font-bold text-navy/70 leading-relaxed italic border-l-8 border-yellow pl-10 py-4">"{item.desc}"</p>
                 <a 
-                  href="https://www.youtube.com/@talewhims/playlists" 
+                  href={item.href} 
                   target="_blank" 
+                  rel="noopener noreferrer"
                   className="inline-flex bg-pink text-white px-12 py-6 rounded-3xl font-display text-2xl gap-4 items-center hover:scale-105 transition-transform shadow-xl hover:shadow-pink/20"
                 >
                   Watch Full Playlist <Youtube size={32} />
@@ -603,7 +615,7 @@ function BooksPage() {
       <div className="mt-48 pt-32 border-t-8 border-navy/5 flex justify-center text-center">
         <div className="space-y-10 max-w-2xl">
           <h2 className="text-4xl md:text-5xl">Love our library?</h2>
-          <a href="https://www.amazon.com/author/talewhims" target="_blank" className="inline-block bg-amazon text-white px-16 py-8 rounded-[2rem] font-display text-3xl shadow-2xl hover:-rotate-2 hover:scale-105 active:scale-95 transition-all">
+          <a href={AMAZON_AUTHOR_URL} target="_blank" rel="noopener noreferrer" className="inline-block bg-amazon text-white px-16 py-8 rounded-[2rem] font-display text-3xl shadow-2xl hover:-rotate-2 hover:scale-105 active:scale-95 transition-all">
             Shop All Books on Amazon →
           </a>
         </div>
@@ -654,7 +666,7 @@ function BookCard({ book, type, colorClass }: { book: string; type: "coloring" |
       </h3>
 
       <a 
-        href="https://www.amazon.com/author/talewhims" 
+        href={amazonBookUrl(book)} 
         target="_blank" 
         rel="noopener noreferrer"
         className="bg-amazon hover:bg-[#e68a00] text-white py-5 rounded-2xl font-display text-xl text-center transition-all shadow-lg active:scale-95 flex items-center justify-center gap-3"
