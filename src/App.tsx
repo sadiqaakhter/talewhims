@@ -1,11 +1,20 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Menu, X, ShoppingCart, Youtube, Book as BookIcon, Play, Star, Sparkles, Mail, ExternalLink, Heart, ArrowRight, User, Instagram } from "lucide-react";
+import { Menu, X, ShoppingCart, Youtube, Book as BookIcon, Play, Star, Sparkles, Mail, ExternalLink, Heart, ArrowRight, User, Instagram, Download } from "lucide-react";
 
-type Page = "home" | "books" | "about" | "others";
+type Page = "home" | "books" | "freebies" | "about" | "others";
 
 const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@talewhims";
 const AMAZON_AUTHOR_URL = "https://www.amazon.com/author/talewhims";
+const EDDY_VIDEO_URL = "https://www.youtube.com/watch?v=2PvCdprnTAc&list=PLC8dnaJd9DUaljZhTdCBZFV4EPI3CJ40v&index=6";
+const EDDY_FREEBIE_URL = "freebies/eddy-i-am-amazing-freebie.png";
+const eddyPreviewImages = [
+  "freebies/eddy-i-am-amazing-freebie.png",
+  "freebies/eddy-preview-1.png",
+  "freebies/eddy-preview-2.png",
+  "freebies/eddy-preview-3.png",
+  "freebies/eddy-preview-4.png",
+];
 
 const amazonBookLinks: Record<string, string> = {
   "Busy Squirrel": "https://www.amazon.com/Busy-Squirrels-Adventure-Educational-Coloring/dp/B0DNJ5CW5K",
@@ -114,6 +123,12 @@ export default function App() {
               Books
             </button>
             <button 
+              onClick={() => setCurrentPage("freebies")}
+              className={`text-sm font-black uppercase tracking-[0.2em] transition-colors ${currentPage === "freebies" ? "text-gold" : "text-white/60 hover:text-white"}`}
+            >
+              Freebies
+            </button>
+            <button 
               onClick={() => setCurrentPage("about")}
               className={`text-sm font-black uppercase tracking-[0.2em] transition-colors ${currentPage === "about" ? "text-gold" : "text-white/60 hover:text-white"}`}
             >
@@ -156,6 +171,12 @@ export default function App() {
                 Books
               </button>
               <button 
+                onClick={() => togglePage("freebies")}
+                className={`text-2xl font-display text-left py-4 border-b border-white/5 ${currentPage === "freebies" ? "text-gold" : "text-white/50"}`}
+              >
+                Freebies
+              </button>
+              <button 
                 onClick={() => togglePage("about")}
                 className={`text-2xl font-display text-left py-4 border-b border-white/5 ${currentPage === "about" ? "text-gold" : "text-white/50"}`}
               >
@@ -177,6 +198,7 @@ export default function App() {
         <AnimatePresence mode="wait">
           {currentPage === "home" && <HomePage key="home" onPageChange={setCurrentPage} />}
           {currentPage === "books" && <BooksPage key="books" />}
+          {currentPage === "freebies" && <FreebiesPage key="freebies" />}
           {currentPage === "about" && <AboutPage key="about" />}
           {currentPage === "others" && <OthersPage key="others" />}
         </AnimatePresence>
@@ -215,6 +237,7 @@ export default function App() {
               <div className="flex flex-col gap-4 font-bold text-sm text-white/70 text-center md:text-right">
                 <button onClick={() => { setCurrentPage("home"); window.scrollTo(0, 0); }} className="hover:text-white transition-colors uppercase tracking-widest">Home</button>
                 <button onClick={() => { setCurrentPage("books"); window.scrollTo(0, 0); }} className="hover:text-white transition-colors uppercase tracking-widest">Books</button>
+                <button onClick={() => { setCurrentPage("freebies"); window.scrollTo(0, 0); }} className="hover:text-white transition-colors uppercase tracking-widest">Freebies</button>
                 <button onClick={() => { setCurrentPage("about"); window.scrollTo(0, 0); }} className="hover:text-white transition-colors uppercase tracking-widest">About Us</button>
                 <button onClick={() => { setCurrentPage("others"); window.scrollTo(0, 0); }} className="hover:text-white transition-colors uppercase tracking-widest">Others</button>
               </div>
@@ -372,6 +395,8 @@ function HomePage({ onPageChange }: { onPageChange: (page: Page) => void }) {
         </div>
       </section>
 
+      <FreebieFeature onPageChange={onPageChange} />
+
       {/* Featured Books Section */}
       <section className="py-24 px-6 bg-white border-y border-navy/5">
         <div className="max-w-7xl mx-auto">
@@ -482,6 +507,123 @@ function ColoringPagesSlideshow() {
         </div>
       </div>
     </section>
+  );
+}
+
+function FreebieFeature({ onPageChange }: { onPageChange: (page: Page) => void }) {
+  return (
+    <section className="py-24 px-6 bg-white border-y border-navy/5 overflow-hidden">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+        <div className="relative">
+          <div className="absolute -inset-6 bg-yellow/20 rounded-[3rem] rotate-2" />
+          <div className="relative bg-cream rounded-[3rem] p-4 shadow-2xl border-4 border-white">
+            <img
+              src={EDDY_FREEBIE_URL}
+              alt="Free I Am Amazing Eddy printable coloring page"
+              className="w-full rounded-[2.5rem] shadow-inner"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-8 text-center lg:text-left">
+          <span className="inline-flex bg-pink/10 text-pink px-6 py-2 rounded-full text-sm font-black uppercase tracking-[0.25em]">
+            Free Printable
+          </span>
+          <h2 className="text-4xl md:text-6xl text-navy leading-tight">
+            Free Eddy the Elephant activity page
+          </h2>
+          <p className="text-xl md:text-2xl font-bold text-navy/60 leading-relaxed">
+            A confidence-building printable from the I Am Amazing series, made for coloring, tracing, and celebrating self-esteem.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <a
+              href={EDDY_FREEBIE_URL}
+              download
+              className="bg-pink text-white px-10 py-5 rounded-2xl font-display text-2xl flex items-center justify-center gap-3 shadow-xl hover:-translate-y-1 transition-all"
+            >
+              Download Free Page <Download size={26} />
+            </a>
+            <button
+              onClick={() => onPageChange("freebies")}
+              className="bg-royal text-white px-10 py-5 rounded-2xl font-display text-2xl flex items-center justify-center gap-3 shadow-xl hover:-translate-y-1 transition-all"
+            >
+              See Freebies <ArrowRight size={26} />
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FreebiesPage() {
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="py-24 px-6 max-w-7xl mx-auto">
+      <div className="text-center mb-20 max-w-4xl mx-auto space-y-6">
+        <span className="inline-flex bg-yellow/30 text-royal px-6 py-2 rounded-full text-sm font-black uppercase tracking-[0.25em]">
+          Free Kids Printables
+        </span>
+        <h1 className="text-5xl md:text-[5rem] leading-tight">I Am Amazing Freebies</h1>
+        <p className="text-xl md:text-3xl font-bold text-navy/50">
+          Download confidence-building coloring pages and activities inspired by Eddy's story.
+        </p>
+      </div>
+
+      <section className="bg-white rounded-[3rem] p-6 md:p-12 shadow-2xl border border-navy/5">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="lg:col-span-5">
+            <div className="bg-cream rounded-[2.5rem] p-4 border-4 border-white shadow-xl">
+              <img
+                src={EDDY_FREEBIE_URL}
+                alt="Eddy I Am Amazing free printable preview"
+                className="w-full rounded-[2rem]"
+              />
+            </div>
+          </div>
+
+          <div className="lg:col-span-7 space-y-8 text-center lg:text-left">
+            <span className="inline-flex bg-pink/10 text-pink px-5 py-2 rounded-full text-xs font-black uppercase tracking-[0.25em]">
+              Eddy the Elephant
+            </span>
+            <h2 className="text-4xl md:text-6xl text-navy leading-tight">
+              Free I Am Amazing printable pack
+            </h2>
+            <p className="text-xl md:text-2xl font-bold text-navy/60 leading-relaxed">
+              Start with a sweet coloring page for kids, then watch Eddy's story about kindness, confidence, and loving who you are.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <a
+                href={EDDY_FREEBIE_URL}
+                download
+                className="bg-pink text-white px-10 py-5 rounded-2xl font-display text-2xl flex items-center justify-center gap-3 shadow-xl hover:-translate-y-1 transition-all"
+              >
+                Download Free Page <Download size={26} />
+              </a>
+              <a
+                href={EDDY_VIDEO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-royal text-white px-10 py-5 rounded-2xl font-display text-2xl flex items-center justify-center gap-3 shadow-xl hover:-translate-y-1 transition-all"
+              >
+                Watch Eddy's Story <Youtube size={28} />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mt-12">
+          {eddyPreviewImages.slice(1).map((src, index) => (
+            <div key={src} className="bg-cream rounded-[1.5rem] p-3 shadow-md border border-navy/5">
+              <img
+                src={src}
+                alt={`Eddy printable preview ${index + 1}`}
+                className="w-full aspect-[3/4] object-cover rounded-[1rem]"
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+    </motion.div>
   );
 }
 
