@@ -8,6 +8,7 @@ const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@talewhims";
 const AMAZON_AUTHOR_URL = "https://www.amazon.com/author/talewhims";
 const EDDY_VIDEO_URL = "https://www.youtube.com/watch?v=2PvCdprnTAc&list=PLC8dnaJd9DUaljZhTdCBZFV4EPI3CJ40v&index=6";
 const EDDY_FREEBIE_URL = "freebies/eddy-i-am-amazing-freebie.png";
+const EDDY_BOOK_COVER_URL = "freebies/eddy-book-cover.jpg";
 const eddyPreviewImages = [
   "freebies/eddy-i-am-amazing-freebie.png",
   "freebies/eddy-preview-1.png",
@@ -591,6 +592,9 @@ function FreebiesPage() {
             <p className="text-xl md:text-2xl font-bold text-navy/60 leading-relaxed">
               Start with a sweet coloring page for kids, then watch Eddy's story about kindness, confidence, and loving who you are.
             </p>
+            <p className="text-lg md:text-xl font-bold text-navy/50 leading-relaxed">
+              The I Am Amazing series is aligned with the CASEL Social Emotional Learning framework, supporting self-awareness competencies for children aged 4-8. Each story is designed to help children recognise their unique strengths, build confidence, and develop a positive sense of identity.
+            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <a
                 href={EDDY_FREEBIE_URL}
@@ -607,6 +611,27 @@ function FreebiesPage() {
               >
                 Watch Eddy's Story <Youtube size={28} />
               </a>
+            </div>
+
+            <div className="bg-cream rounded-[2rem] p-5 md:p-6 border border-navy/5 flex flex-col sm:flex-row gap-6 items-center text-center sm:text-left">
+              <div className="w-32 sm:w-36 aspect-[2/3] rounded-[1.25rem] overflow-hidden bg-white shadow-lg flex-shrink-0">
+                <img
+                  src={EDDY_BOOK_COVER_URL}
+                  alt="I Am Amazing Eddy the Elephant activity book cover"
+                  className="w-full h-full object-cover object-right"
+                />
+              </div>
+              <div className="space-y-3">
+                <span className="text-xs font-black uppercase tracking-[0.25em] text-pink">
+                  Full Activity Book
+                </span>
+                <h3 className="text-2xl md:text-3xl text-navy">
+                  I Am Amazing: Eddy the Elephant
+                </h3>
+                <p className="font-bold text-navy/55 leading-relaxed">
+                  The complete 24-page self-esteem activity book includes Eddy's story, coloring pages, tracing, kindness prompts, and confidence activities.
+                </p>
+              </div>
             </div>
           </div>
         </div>
