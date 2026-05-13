@@ -41,6 +41,40 @@ const amazonBookLinks: Record<string, string> = {
   "Jamie's Speedy Dream": "https://www.amazon.com/Inspiring-Autism-Story-Speedy-Dream-ebook/dp/B0CX5H5L5T",
 };
 
+
+type BookAsset = {
+  cover: string;
+  aplus?: string;
+  ages?: string;
+};
+
+const bookAssets: Record<string, BookAsset> = {
+  "Busy Squirrel": { cover: "books/covers/Mockup forest friends/Busy Squirrel front & back Cover Mockup.jpg" },
+  "Graceful Deer": { cover: "books/covers/Mockup forest friends/Deer Coloring front & back Cover Mockup.jpg" },
+  "Laughing Raccoon": { cover: "books/covers/Mockup forest friends/Raccoon Coloring front & back Cover Mockup.jpg" },
+  "Quiet Hedgehog": { cover: "books/covers/Mockup forest friends/Hedgehog Coloring front & back Cover Mockup.jpg" },
+  "The Sly Fox": { cover: "books/covers/Mockup forest friends/Fox Coloring front & back Cover Mockup.jpg" },
+  "Tiny Mouse": { cover: "books/covers/Mockup forest friends/Tiny Mouse Coloring Book front & back Cover Mockup.jpg" },
+  "Wise Owl": { cover: "books/covers/Mockup forest friends/Wise Owl Coloring front & back Cover Mockup.jpg" },
+  "Curious Octopus": { cover: "books/covers/Mockup Ocean wonders/Curious Octopus Coloring front & back Cover Mockup.jpg" },
+  "Dolphin": { cover: "books/covers/Mockup Ocean wonders/Dolphin Coloring front & back Cover Mockup.jpg" },
+  "Gliding Turtle": { cover: "books/covers/Mockup Ocean wonders/Gliding Turtle Coloring front & back Cover Mockup.jpg" },
+  "Jellyfish Ballet": { cover: "books/covers/Mockup Ocean wonders/Jellyfish Ballet Coloring front & back Cover Mockup.jpg" },
+  "Smiling Shark": { cover: "books/covers/Mockup Ocean wonders/Smiling Shark Coloring front & back Cover Mockup.jpg" },
+  "Starfish Parade": { cover: "books/covers/Mockup Ocean wonders/Starfish Parade Coloring front & back Cover Mockup.jpg" },
+  "The Fire-Breathing Dragon": { cover: "books/covers/Mockup fantasy creature series/The Fire-Breathing Dragon Coloring front & back Cover  Mockup.jpg" },
+  "The Mystical Unicorn": { cover: "books/covers/Mockup fantasy creature series/The Mystical Unicorn Coloring front & back Cover Mockup.jpg" },
+  "Cute Dog": { cover: "books/covers/MOCKUP Cute Animals/Cute dog Coloring Book Mockup.jpg" },
+  "Cute Cat": { cover: "books/covers/MOCKUP Cute Animals/Cat Coloring Book  Mockup.jpg" },
+  "Penguin": { cover: "books/covers/MOCKUP Cute Animals/Penguin coloring book Mockup.jpg" },
+  "Christmas Penguin": { cover: "books/covers/MOCKUP Cute Animals/Penguin coloring book Mockup.jpg" },
+  "Cute Transport": { cover: "books/covers/Mockup Kids Activity Coloring/Transportation Coloring Book  Mockup.jpg" },
+  "Cute Girl": { cover: "books/covers/Mockup Kids Activity Coloring/Girls Coloring boox  Mockup.jpg" },
+  "Boys": { cover: "books/covers/Mockup Kids Activity Coloring/Boys Coloring Book  Mockup.jpg" },
+  "Cute Vegetables": { cover: "books/covers/Mockup Kids Activity Coloring/Vegatable Coloring Book  Mockup.jpg" },
+  "Christmas": { cover: "books/covers/Mockup Xmas Coloring Book/Xmas Coloring front & back Cover Mockup.jpg" },
+};
+
 const playlistLinks = {
   originalSongs: "https://www.youtube.com/playlist?list=PLC8dnaJd9DUaldB9VRuNHAG5yLxY_Dt-i",
   nurseryRhymes: "https://www.youtube.com/playlist?list=PLC8dnaJd9DUaZlS5KzJOswvK2PHKXF1o6",
@@ -778,7 +812,7 @@ function BooksPage() {
         >
           Stories You Can Hold 📚
         </motion.h1>
-        <p className="text-xl md:text-3xl font-bold text-navy/50">Original illustrated coloring books and storybooks by Sadiqa Akhter — available on Amazon</p>
+        <p className="text-xl md:text-3xl font-bold text-navy/50">Original illustrated coloring books and storybooks by Sadiqa Akhter. New books are published one by one, with more coming soon.</p>
       </div>
 
       {/* Tabs */}
@@ -812,7 +846,7 @@ function BooksPage() {
                 <span className="w-4 h-16 bg-pink rounded-full block" />
                 {section.category}
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 {section.books.map((book, bIdx) => (
                   <BookCard 
                     key={bIdx} 
@@ -841,60 +875,94 @@ function BooksPage() {
 
 function BookCard({ book, type, colorClass }: { book: string; type: "coloring" | "story"; colorClass: string }) {
   const [imageError, setImageError] = useState(false);
-  
-  const safeTitle = book.toLowerCase().replace(/ /g, '-').replace(/[^\w-]/g, '');
-  const fileName = type === "coloring" ? `${safeTitle}-coloring-book.jpg` : `${safeTitle}.jpg`;
   const amazonUrl = amazonBookLinks[book];
+  const asset = bookAssets[book];
+  const coverUrl = asset?.cover;
+  const aplusUrl = asset?.aplus;
+  const isPublished = Boolean(amazonUrl);
 
   return (
-    <motion.div 
+    <motion.div
       variants={{
         hidden: { y: 20, opacity: 0 },
         visible: { y: 0, opacity: 1 }
       }}
-      whileHover={{ y: -8, scale: 1.02 }}
-      className="bg-white rounded-2xl shadow-lg p-4 flex flex-col h-full group cursor-pointer border border-navy/5 hover:shadow-2xl transition-all"
+      whileHover={{ y: -6 }}
+      className="bg-white rounded-2xl shadow-lg border border-navy/5 overflow-hidden group hover:shadow-2xl transition-all"
     >
-      <div className="relative w-full h-[320px] rounded-xl overflow-hidden shadow-inner mb-6 bg-cream flex-shrink-0">
-        {!imageError ? (
-          <img 
-            src={fileName} 
-            alt={book} 
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-            onError={() => setImageError(true)}
-          />
-        ) : (
-          <div className={`w-full h-full ${colorClass} flex flex-col items-center justify-center p-8 text-center`}>
-            <BookIcon size={64} className="mb-6 opacity-20" />
-            <span className="font-display text-2xl text-navy opacity-60 leading-tight">{book}</span>
+      <div className="grid grid-cols-1 md:grid-cols-[210px_1fr] h-full">
+        <div className="relative bg-cream p-4 md:p-5">
+          <div className="relative aspect-[3/4] rounded-xl overflow-hidden bg-white shadow-inner">
+            {coverUrl && !imageError ? (
+              <img
+                src={coverUrl}
+                alt={`${book} book cover`}
+                className="w-full h-full object-contain group-hover:scale-[1.03] transition-transform duration-700"
+                onError={() => setImageError(true)}
+              />
+            ) : (
+              <div className={`w-full h-full ${colorClass} flex flex-col items-center justify-center p-6 text-center`}>
+                <BookIcon size={54} className="mb-5 opacity-20" />
+                <span className="font-display text-xl text-navy opacity-70 leading-tight">{book}</span>
+              </div>
+            )}
           </div>
-        )}
-        
-        <div className="absolute top-4 right-4">
-          <span className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full text-[12px] font-black uppercase tracking-widest text-navy shadow-md ring-1 ring-black/5">
-            Ages 3–10
-          </span>
+          {!isPublished && (
+            <span className="absolute top-7 left-7 bg-pink text-white px-4 py-2 rounded-full text-[11px] font-black uppercase tracking-widest shadow-lg">
+              Coming Soon
+            </span>
+          )}
+        </div>
+
+        <div className="p-6 md:p-7 flex flex-col gap-5">
+          <div className="space-y-3">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="bg-yellow/35 text-navy px-4 py-2 rounded-full text-[11px] font-black uppercase tracking-widest">
+                {asset?.ages || "Ages 4-8"}
+              </span>
+              <span className={`px-4 py-2 rounded-full text-[11px] font-black uppercase tracking-widest ${isPublished ? "bg-amazon/15 text-amazon" : "bg-pink/10 text-pink"}`}>
+                {isPublished ? "Available" : "Coming Soon"}
+              </span>
+            </div>
+            <h3 className="font-display text-3xl md:text-4xl text-navy leading-tight">
+              {!isPublished && <span className="text-pink">Coming Soon: </span>}
+              {book}
+            </h3>
+            <p className="text-navy/60 font-bold leading-relaxed">
+              {type === "coloring"
+                ? "A playful TaleWhims coloring book made for little hands, bright imagination, and screen-free creative time."
+                : "A warm TaleWhims storybook with gentle lessons, expressive characters, and big-hearted learning."}
+            </p>
+          </div>
+
+          {aplusUrl ? (
+            <div className="rounded-xl overflow-hidden bg-cream border border-navy/5">
+              <img src={aplusUrl} alt={`${book} A+ content`} className="w-full h-36 object-cover" />
+            </div>
+          ) : (
+            <div className="rounded-xl bg-cream border border-dashed border-navy/15 px-5 py-4 text-sm font-black uppercase tracking-widest text-navy/35">
+              A+ content image will be added later
+            </div>
+          )}
+
+          <div className="mt-auto">
+            {isPublished ? (
+              <a
+                href={amazonUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex w-full md:w-auto bg-amazon hover:bg-[#e68a00] text-white px-8 py-4 rounded-2xl font-display text-xl text-center transition-all shadow-lg active:scale-95 items-center justify-center gap-3"
+              >
+                Buy on Amazon <ShoppingCart size={22} />
+              </a>
+            ) : (
+              <div className="inline-flex w-full md:w-auto bg-navy/10 text-navy/45 px-8 py-4 rounded-2xl font-display text-xl text-center shadow-inner items-center justify-center gap-3">
+                Coming Soon
+              </div>
+            )}
+          </div>
         </div>
       </div>
-
-      <h3 className="font-display text-2xl text-navy mb-6 flex-1 line-clamp-2 px-2 leading-tight">
-        {book}
-      </h3>
-
-      {amazonUrl ? (
-        <a 
-          href={amazonUrl} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="bg-amazon hover:bg-[#e68a00] text-white py-5 rounded-2xl font-display text-xl text-center transition-all shadow-lg active:scale-95 flex items-center justify-center gap-3"
-        >
-          Buy on Amazon
-        </a>
-      ) : (
-        <div className="bg-navy/10 text-navy/50 py-5 rounded-2xl font-display text-xl text-center shadow-inner flex items-center justify-center gap-3">
-          Coming soon
-        </div>
-      )}
     </motion.div>
   );
 }
