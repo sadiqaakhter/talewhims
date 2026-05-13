@@ -49,6 +49,7 @@ type BookAsset = {
 };
 
 const bookAssets: Record<string, BookAsset> = {
+  "I Am Amazing: Eddy the Elephant": { cover: "freebies/eddy-book-cover.jpg", ages: "Ages 4-8" },
   "Busy Squirrel": { cover: "books/covers/Mockup forest friends/Busy Squirrel front & back Cover Mockup.jpg" },
   "Graceful Deer": { cover: "books/covers/Mockup forest friends/Deer Coloring front & back Cover Mockup.jpg" },
   "Laughing Raccoon": { cover: "books/covers/Mockup forest friends/Raccoon Coloring front & back Cover Mockup.jpg" },
@@ -774,6 +775,10 @@ function WatchPage() {
 
 // --- BOOKS PAGE Component ---
 function BooksPage() {
+  const activityBooks = [
+    { category: "I Am Amazing Series", color: "bg-yellow", books: ["I Am Amazing: Eddy the Elephant"] }
+  ];
+
   const coloringBooks = [
     { category: "Forest Friends", color: "bg-teal", books: ["Busy Squirrel", "Graceful Deer", "Laughing Raccoon", "Quiet Hedgehog", "The Sly Fox", "Tiny Mouse", "Wise Owl"] },
     { category: "Ocean Wonders", color: "bg-pink", books: ["Curious Octopus", "Dolphin", "Gliding Turtle", "Jellyfish Ballet", "Smiling Shark", "Starfish Parade"] },
@@ -790,7 +795,7 @@ function BooksPage() {
     { category: "Moral Stories", color: "bg-yellow", books: ["Benny the Brave Little Bunny", "Jamie's Speedy Dream"] }
   ];
 
-  const [activeTab, setActiveTab] = useState<"coloring" | "story">("coloring");
+  const [activeTab, setActiveTab] = useState<"coloring" | "activity" | "story">("coloring");
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -824,6 +829,12 @@ function BooksPage() {
           Coloring Books
         </button>
         <button 
+          onClick={() => setActiveTab("activity")}
+          className={`px-12 py-6 rounded-[2rem] font-display text-2xl transition-all shadow-md ${activeTab === "activity" ? "bg-pink text-white scale-105 shadow-xl" : "bg-white text-navy opacity-50 hover:opacity-100"}`}
+        >
+          Activity Books
+        </button>
+        <button 
           onClick={() => setActiveTab("story")}
           className={`px-12 py-6 rounded-[2rem] font-display text-2xl transition-all shadow-md ${activeTab === "story" ? "bg-pink text-white scale-105 shadow-xl" : "bg-white text-navy opacity-50 hover:opacity-100"}`}
         >
@@ -840,7 +851,7 @@ function BooksPage() {
           exit={{ opacity: 0, y: -20 }}
           className="space-y-40"
         >
-          {(activeTab === "coloring" ? coloringBooks : storyBooks).map((section, idx) => (
+          {(activeTab === "coloring" ? coloringBooks : activeTab === "activity" ? activityBooks : storyBooks).map((section, idx) => (
             <div key={idx} className="space-y-16">
               <h2 className="text-4xl md:text-6xl text-navy inline-flex items-center gap-6">
                 <span className="w-4 h-16 bg-pink rounded-full block" />
@@ -873,7 +884,7 @@ function BooksPage() {
   );
 }
 
-function BookCard({ book, type, colorClass }: { book: string; type: "coloring" | "story"; colorClass: string }) {
+function BookCard({ book, type, colorClass }: { book: string; type: "coloring" | "activity" | "story"; colorClass: string }) {
   const [imageError, setImageError] = useState(false);
   const amazonUrl = amazonBookLinks[book];
   const asset = bookAssets[book];
@@ -931,7 +942,9 @@ function BookCard({ book, type, colorClass }: { book: string; type: "coloring" |
             <p className="text-navy/60 font-bold leading-relaxed">
               {type === "coloring"
                 ? "A playful TaleWhims coloring book made for little hands, bright imagination, and screen-free creative time."
-                : "A warm TaleWhims storybook with gentle lessons, expressive characters, and big-hearted learning."}
+                : type === "activity"
+                  ? "A confidence-building TaleWhims activity book with coloring pages, gentle prompts, and self-esteem fun."
+                  : "A warm TaleWhims storybook with gentle lessons, expressive characters, and big-hearted learning."}
             </p>
           </div>
 
