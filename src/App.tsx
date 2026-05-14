@@ -42,6 +42,8 @@ const amazonBookLinks: Record<string, string> = {
 };
 
 
+type AgeFilter = "all" | "4-8" | "8-12" | "12+";
+
 type BookAsset = {
   cover: string;
   aplus?: string;
@@ -49,6 +51,7 @@ type BookAsset = {
 };
 
 const bookAssets: Record<string, BookAsset> = {
+  "Butterfly Mosaic Coloring Book": { cover: "books/covers/Mockup Mosaic Coloring Books/Butterfly Mosaic Coloring Page.jpg", ages: "Ages 8-12" },
   "I Am Amazing: Eddy the Elephant": { cover: "freebies/eddy-book-cover.jpg", ages: "Ages 4-8" },
   "Busy Squirrel": { cover: "books/covers/Mockup forest friends/Busy Squirrel front & back Cover Mockup.jpg" },
   "Graceful Deer": { cover: "books/covers/Mockup forest friends/Deer Coloring front & back Cover Mockup.jpg" },
@@ -786,7 +789,8 @@ function BooksPage() {
     { category: "Kawaii & Cute", color: "bg-yellow", books: ["Kawaii Farm Friends", "Kawaii Animal Adventures", "Cute Pizza", "Cupcakes"] },
     { category: "Cute Animals", color: "bg-coral", books: ["Cute Dog", "Cute Cat", "Penguin", "Christmas Penguin"] },
     { category: "Kids Activity", color: "bg-teal", books: ["Cute Transport", "Cute Girl", "Boys", "Cute Vegetables", "Under the Sea"] },
-    { category: "Christmas", color: "bg-pink", books: ["Christmas", "XMAS Bunny"] }
+    { category: "Christmas", color: "bg-pink", books: ["Christmas", "XMAS Bunny"] },
+    { category: "Mosaic Coloring Books", color: "bg-purple", books: ["Butterfly Mosaic Coloring Book"] }
   ];
 
   const storyBooks = [
@@ -796,6 +800,28 @@ function BooksPage() {
   ];
 
   const [activeTab, setActiveTab] = useState<"coloring" | "activity" | "story">("coloring");
+  const [ageFilter, setAgeFilter] = useState<AgeFilter>("all");
+
+  const ageFilters: { id: AgeFilter; label: string }[] = [
+    { id: "all", label: "All Ages" },
+    { id: "4-8", label: "Ages 4-8" },
+    { id: "8-12", label: "Ages 8-12" },
+    { id: "12+", label: "Ages 12+" },
+  ];
+
+  const getBookAgeGroup = (book: string, tab: "coloring" | "activity" | "story"): AgeFilter => {
+    const ages = bookAssets[book]?.ages || (tab === "story" ? "Ages 8-12" : "Ages 4-8");
+    if (ages.includes("12+")) return "12+";
+    if (ages.includes("8-12")) return "8-12";
+    return "4-8";
+  };
+
+  const activeSections = (activeTab === "coloring" ? coloringBooks : activeTab === "activity" ? activityBooks : storyBooks)
+    .map((section) => ({
+      ...section,
+      books: section.books.filter((book) => ageFilter === "all" || getBookAgeGroup(book, activeTab) === ageFilter),
+    }))
+    .filter((section) => section.books.length > 0);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -851,7 +877,7 @@ function BooksPage() {
           exit={{ opacity: 0, y: -20 }}
           className="space-y-40"
         >
-          {(activeTab === "coloring" ? coloringBooks : activeTab === "activity" ? activityBooks : storyBooks).map((section, idx) => (
+          {activeSections.map((section, idx) => (
             <div key={idx} className="space-y-16">
               <h2 className="text-4xl md:text-6xl text-navy inline-flex items-center gap-6">
                 <span className="w-4 h-16 bg-pink rounded-full block" />
